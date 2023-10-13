@@ -55,7 +55,7 @@ def get_tooling_args(tool, lang):
     tooling_args_after = {}
     for arg in tooling_args_before:
         arg_id = arg.pop('id')
-        tooling_args_after[arg_id] = tooling_args_before
+        tooling_args_after[arg_id] = arg
 
     return tooling_args_after
 
