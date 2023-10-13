@@ -82,11 +82,6 @@ def generate_step_json(args, tooling_args):
 if __name__ == "__main__":
     args = get_input_args()
 
-    ## print(dir(args))
-    #print(args.__dict__.values())
-    #import sys
-    #sys.exit(0)
-
     tool = args.tool
     if tool in ['commands']:
         lang = 'default'
