@@ -46,23 +46,21 @@ def get_input_args():
     return parser.parse_args()
 
 
-def generate_step_json(tool, **kwargs):
-    # args
-    args_list = [for k,v in kwargs.items()]
-
-def get_tool_args(tool, lang):
+def get_tooling_args(tool, lang):
     req = requests.get(
         url=TOOLING_URL
     )
     data = req.json()
-    tool_args_before = data['tools'][lang][tool]['args']
-    tool_args_after = {}
-    for arg in tool_args_before:
+    tooling_args_before = data['tools'][lang][tool]['args']
+    tooling_args_after = {}
+    for arg in tooling_args_before:
         print(arg)
         arg_id = arg.pop('id')
-        tool_args_after[arg_id] = tool_args_before
+        tooling_args_after[arg_id] = tooling_args_before
 
-    return tool_args_after
+    return tooling_args_after
+
+
 
 
 if __name__ == "__main__":
@@ -78,5 +76,6 @@ if __name__ == "__main__":
         logger.debug(e)
         sys.exit(2)
 
-    args_dict = get_tool_args(tool, lang)
-    logger.debug('Format tool args as a dict: %s' % args_dict)
+    tooling_args = get_tooling_args(tool, lang)
+    logger.debug('Format tool args as a dict: %s' % tooling_args)
+
