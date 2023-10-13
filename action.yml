@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: Copyright contributors to the Software Quality Assurance as a Service (SQAaaS) project.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+name: 'Step definition within a SQAaaS quality assessment'
+description: 'Define a step (tool+args) in the evaluation of a given criterion within the SQAaaS quality assessment'
+author: 'Pablo Orviz <orviz@ifca.unican.es>'
+inputs:
+  name:
+    description: Name of the step
+    required: true
+  tool:
+    description: Tool to execute within the step
+    required: true
+  # For shell commands
+  commands:
+    description: List of shell commands to execute
+    required: false
+  # For 'pytest' tool
+  test_path:
+    description: Path to test cases
+    required: false
+outputs:
+  step:
+    description: 'Definition of the step in JSON format (in accordance with SQAaaS API specification)
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.name }}
+    - ${{ inputs.tool }}
+    - ${{ inputs.commands }}
+    - ${{ inputs.test_path }}
