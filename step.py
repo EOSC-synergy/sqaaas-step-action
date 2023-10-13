@@ -62,15 +62,19 @@ def get_tooling_args(tool, lang):
 
 def generate_step_json(args, tooling_args):
     tool_args = []
-    for arg_k, arg_v in args.__dict__:
-        tool_args.append({
-            'id': tooling_args[arg_k]['id'],
-            'type': tooling_args[arg_k]['type'],
-            'value': arg_v
-        })
+    for arg_k, arg_v in args.__dict__.items():
+        if arg_k not in tooling_args.keys():
+            logger.debug('Tool argument <%s> not in SQAaaS tooling' % arg_k)
+        else:
+            logger.debug(tooling_args[arg_k])
+            tool_args.append({
+                'id': arg_k,
+                'type': tooling_args[arg_k]['type'],
+                'value': arg_v
+            })
 
     return {
-        'name': args.name,
+        'name': args.tool,
         'args': tool_args
     }
 
