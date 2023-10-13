@@ -22,7 +22,7 @@ inputs:
     required: false
 outputs:
   step:
-    description: 'Definition of the step in JSON format (in accordance with SQAaaS API specification)
+    description: 'Definition of the step in JSON format (in accordance with SQAaaS API specification)'
 runs:
   using: 'docker'
   image: 'Dockerfile'
