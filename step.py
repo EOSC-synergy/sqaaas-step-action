@@ -4,10 +4,14 @@
 
 import argparse
 import logging
+import requests
 
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('sqaaas-step-action')
+
+
+TOOLING_URL = 'https://raw.githubusercontent.com/EOSC-synergy/sqaaas-tooling/release/1.8.0/tooling.json'
 
 
 def get_input_args():
@@ -46,10 +50,19 @@ def generate_step_json(tool, **kwargs):
     # args
     args_list = [for k,v in kwargs.items()]
 
+def get_tool_args(tool, lang):
+    req = requests.get(
+        url=TOOLING_URL
+    )
+    data = req.json()
+    tool_args_before = data['tools'][lang][tool]['args']
+    tool_args_after = {}
+    for arg in tool_args_before:
+        print(arg)
+        arg_id = arg.pop('id')
+        tool_args_after[arg_id] = tool_args_before
 
-    return {
-        'name': tool,
-    }
+    return tool_args_after
 
 
 if __name__ == "__main__":
@@ -57,9 +70,13 @@ if __name__ == "__main__":
     tool = args.tool
 
     if tool in ['commands']:
-        pass
+        lang = 'default'
     elif tool in ['pytest']:
-        pass
+        lang = 'Python'
     else:
         logger.error('Tool <%s> not supported' % tool)
         logger.debug(e)
+        sys.exit(2)
+
+    args_dict = get_tool_args(tool, lang)
+    logger.debug('Format tool args as a dict: %s' % args_dict)
