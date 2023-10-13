@@ -65,8 +65,13 @@ def get_tooling_args(tool, lang):
 
 if __name__ == "__main__":
     args = get_input_args()
-    tool = args.tool
 
+    ## print(dir(args))
+    #print(args.__dict__.values())
+    #import sys
+    #sys.exit(0)
+
+    tool = args.tool
     if tool in ['commands']:
         lang = 'default'
     elif tool in ['pytest']:
