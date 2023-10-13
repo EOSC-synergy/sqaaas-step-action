@@ -61,6 +61,19 @@ def get_tooling_args(tool, lang):
     return tooling_args_after
 
 
+def generate_step_json(args, tooling_args):
+    tool_args = []
+    for arg_k, arg_v in args.__dict__:
+        tool_args.append({
+            'id': tooling_args[arg_k]['id'],
+            'type': tooling_args[arg_k]['type'],
+            'value': arg_v
+        })
+
+    return {
+        'name': args.name,
+        'args': tool_args
+    }
 
 
 if __name__ == "__main__":
@@ -84,3 +97,5 @@ if __name__ == "__main__":
     tooling_args = get_tooling_args(tool, lang)
     logger.debug('Format tool args as a dict: %s' % tooling_args)
 
+    step_json = generate_step_json(args, tooling_args)
+    logger.info('Step definition (JSON format): %s' % step_json)
