@@ -41,8 +41,18 @@ def get_input_args():
     return parser.parse_args()
 
 
+def generate_step_json(tool, **kwargs):
+    # args
+    args_list = [for k,v in kwargs.items()]
+
+
+    return {
+        'name': tool,
+    }
+
+
 if __name__ == "__main__":
-	args = get_input_args()
+    args = get_input_args()
     tool = args.tool
 
     if tool in ['commands']:
