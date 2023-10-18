@@ -36,6 +36,7 @@ def get_input_args():
         '--commands',
         metavar='LIST',
         type=str,
+        default=[],
         help='List of shell commands to execute'
     )
     parser.add_argument(
