@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 import argparse
+import json
 import logging
+import os
 import requests
 
 
@@ -97,3 +99,20 @@ if __name__ == "__main__":
 
     step_json = generate_step_json(args, tooling_args)
     logger.info('Step definition (JSON format): %s' % step_json)
+
+    github_workspace = os.environ['GITHUB_WORKSPACE']
+    if github_workspace:
+        logger.debug('Found GitHub workspace: %s' % github_workspace)
+    else:
+        logger.error(
+            'Cannot store step definition: GitHub workspace not defined '
+            'through GITHUB_WORKSPACE variable'
+        )
+        sys.exit(3)
+    step_file = '.'.join([args.name, 'json'])
+    step_file_abspath = os.path.join(github_workspace, step_file)
+    with open(step_file_abspath, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+    logger.info(
+        'Step definition (JSON format) dumped to file: %s' % step_file_abspath
+    )
