@@ -92,7 +92,6 @@ if __name__ == "__main__":
         lang = 'Python'
     else:
         logger.error('Tool <%s> not supported' % tool)
-        logger.debug(e)
         sys.exit(2)
 
     tooling_args = get_tooling_args(tool, lang)
