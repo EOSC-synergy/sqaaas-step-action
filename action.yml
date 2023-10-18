@@ -16,10 +16,12 @@ inputs:
   commands:
     description: List of shell commands to execute
     required: false
+    default: ''
   # For 'pytest' tool
   test_path:
     description: Path to test cases
     required: false
+    default: ''
 outputs:
   step:
     description: 'Definition of the step in JSON format (in accordance with SQAaaS API specification)'
