@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: Copyright contributors to the Software Quality Assurance as a Service (SQAaaS) project.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+on: [push]
+
+jobs:
+  sqaaas_step_job:
+    runs-on: ubuntu-latest
+    name: Job that returns a JSON payload of a step in a SQAaaS assessment
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Step definition for a SQAaaS assessment
+        uses: ./ # Uses an action in the root directory
+        id: sqaaas_step
+        with:
+          name: 'pytest_step'
+          tool: 'pytest'
+          test-path: './mytests'
+      - name: Get step definition
+        id: vars
+        run: echo "step_json=$(cat pytest_step.json)" >> $GITHUB_OUTPUT
+      - name: Test output
+        run: echo ${{ steps.vars.outputs.step_json }}
