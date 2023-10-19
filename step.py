@@ -135,7 +135,8 @@ if __name__ == "__main__":
             'through GITHUB_WORKSPACE variable'
         )
         sys.exit(3)
-    step_file = '.'.join([args.name, 'json'])
+    action_name = get_envvar(envvar='INPUT_NAME')['INPUT_NAME']
+    step_file = '.'.join([action_name, 'json'])
     step_file_abspath = os.path.join(github_workspace, step_file)
     with open(step_file_abspath, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
