@@ -28,8 +28,8 @@ outputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.name }}
-    - ${{ inputs.tool }}
-    - ${{ inputs.commands }}
-    - ${{ inputs.test_path }}
+  # args:
+  #   - ${{ inputs.name }}
+  #   - ${{ inputs.tool }}
+  #   - ${{ inputs.commands }}
+  #   - ${{ inputs.test_path }}

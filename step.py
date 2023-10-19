@@ -84,36 +84,40 @@ def generate_step_json(args, tooling_args):
 
 
 if __name__ == "__main__":
-    args = get_input_args()
+    import os
 
-    tool = args.tool
-    if tool in ['commands']:
-        lang = 'default'
-    elif tool in ['pytest']:
-        lang = 'Python'
-    else:
-        logger.error('Tool <%s> not supported' % tool)
-        sys.exit(2)
+    for name, value in os.environ.items():
+        print("{0}: {1}".format(name, value))
+    # args = get_input_args()
 
-    tooling_args = get_tooling_args(tool, lang)
-    logger.debug('Format tool args as a dict: %s' % tooling_args)
+    # tool = args.tool
+    # if tool in ['commands']:
+    #     lang = 'default'
+    # elif tool in ['pytest']:
+    #     lang = 'Python'
+    # else:
+    #     logger.error('Tool <%s> not supported' % tool)
+    #     sys.exit(2)
 
-    step_json = generate_step_json(args, tooling_args)
-    logger.info('Step definition (JSON format): %s' % step_json)
+    # tooling_args = get_tooling_args(tool, lang)
+    # logger.debug('Format tool args as a dict: %s' % tooling_args)
 
-    github_workspace = os.environ['GITHUB_WORKSPACE']
-    if github_workspace:
-        logger.debug('Found GitHub workspace: %s' % github_workspace)
-    else:
-        logger.error(
-            'Cannot store step definition: GitHub workspace not defined '
-            'through GITHUB_WORKSPACE variable'
-        )
-        sys.exit(3)
-    step_file = '.'.join([args.name, 'json'])
-    step_file_abspath = os.path.join(github_workspace, step_file)
-    with open(step_file_abspath, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
-    logger.info(
-        'Step definition (JSON format) dumped to file: %s' % step_file_abspath
-    )
+    # step_json = generate_step_json(args, tooling_args)
+    # logger.info('Step definition (JSON format): %s' % step_json)
+
+    # github_workspace = os.environ['GITHUB_WORKSPACE']
+    # if github_workspace:
+    #     logger.debug('Found GitHub workspace: %s' % github_workspace)
+    # else:
+    #     logger.error(
+    #         'Cannot store step definition: GitHub workspace not defined '
+    #         'through GITHUB_WORKSPACE variable'
+    #     )
+    #     sys.exit(3)
+    # step_file = '.'.join([args.name, 'json'])
+    # step_file_abspath = os.path.join(github_workspace, step_file)
+    # with open(step_file_abspath, 'w', encoding='utf-8') as f:
+    #     json.dump(data, f, ensure_ascii=False, indent=4)
+    # logger.info(
+    #     'Step definition (JSON format) dumped to file: %s' % step_file_abspath
+    # )
