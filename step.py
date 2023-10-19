@@ -18,6 +18,12 @@ TOOLING_URL = 'https://raw.githubusercontent.com/EOSC-synergy/sqaaas-tooling/rel
 
 
 def get_tooling_args(tool, lang):
+    """Return arguments from SQAaaS tooling for the given tool.
+
+    Keyword arguments:
+    tool -- the tool to get the tooling arguments from
+    lang -- the language that the tool is mapped to
+    """
     req = requests.get(
         url=TOOLING_URL
     )
@@ -32,6 +38,14 @@ def get_tooling_args(tool, lang):
 
 
 def get_envvar(envvar=None, prefix=None, ignore_envvars=[]):
+    """Return a dictionary with the requested environment variables, either
+    individually or through a matching prefix (following this order).
+
+    Keyword arguments:
+    envvar -- the environment variable to get
+    prefix -- the prefix of the environment variable to match
+    ignore_envvars -- a list of environment variables that will be ignored
+    """
     envvars = None
     try:
         if envvar:
@@ -60,6 +74,12 @@ def get_envvar(envvar=None, prefix=None, ignore_envvars=[]):
 
 
 def generate_step_json(tool, tooling_args):
+    """Generate JSON payload corresponding to a step definition.
+
+    Keyword arguments:
+    tool -- the tool requested in the GitHub action
+    tooling_args -- a dict with the SQAaaS tooling data
+    """
     input_envvars = get_envvar(
         prefix='INPUT', ignore_envvars=['INPUT_TOOL', 'INPUT_NAME']
     )
