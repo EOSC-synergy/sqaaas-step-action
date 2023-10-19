@@ -17,39 +17,6 @@ logger = logging.getLogger('sqaaas-step-action')
 TOOLING_URL = 'https://raw.githubusercontent.com/EOSC-synergy/sqaaas-tooling/release/1.8.0/tooling.json'
 
 
-def get_input_args():
-    parser = argparse.ArgumentParser(description=(
-        'SQAaaS step definition in a GitHub workflow.'
-    ))
-    parser.add_argument(
-        '--name',
-        metavar='NAME',
-        type=str,
-        help='Name of the step'
-    )
-    parser.add_argument(
-        '--tool',
-        metavar='TOOL',
-        type=str,
-        help='Name of the tool to be executed within the step'
-    )
-    parser.add_argument(
-        '--commands',
-        metavar='LIST',
-        type=str,
-        default=[],
-        help='List of shell commands to execute'
-    )
-    parser.add_argument(
-        '--test-path',
-        metavar='PATH',
-        type=str,
-        help='Path to test cases'
-    )
-
-    return parser.parse_args()
-
-
 def get_tooling_args(tool, lang):
     req = requests.get(
         url=TOOLING_URL
@@ -64,44 +31,82 @@ def get_tooling_args(tool, lang):
     return tooling_args_after
 
 
-def generate_step_json(args, tooling_args):
+def get_envvar(envvar=None, prefix=None, ignore_envvars=[]):
+    envvars = None
+    try:
+        if envvar:
+            envvars = {envvar: os.environ[envvar]}
+        elif prefix:
+            envvars = dict([
+                (key, os.environ[key])
+                    for key in os.environ.keys() if key.startswith(prefix)
+            ])
+    except KeyError:
+        logger.error('Could not find environment variable: %s' % envvar)
+
+    if ignore_envvars:
+        logger.debug(
+            'Request to ignore environment variables: %s' % ignore_envvars
+        )
+        for key in ignore_envvars:
+            logger.debug('Removing environment variable <%s>' % key)
+            del envvars[key]
+        logger.debug(
+            'Resultant set of environment variables after ignoring '
+            'process: %s' % envvars
+        )
+
+    return envvars
+
+
+def generate_step_json(tool, tooling_args):
+    input_envvars = get_envvar(
+        prefix='INPUT', ignore_envvars=['INPUT_TOOL', 'INPUT_NAME']
+    )
+
+    tooling_args_keys = tooling_args.keys()
     tool_args = []
-    for arg_k, arg_v in args.__dict__.items():
-        if arg_k not in tooling_args.keys():
-            logger.debug('Tool argument <%s> not in SQAaaS tooling' % arg_k)
+    for arg_k, arg_v in input_envvars.items():
+        action_arg = arg_k.replace('INPUT_', '').lower()
+        if action_arg not in tooling_args_keys:
+            logger.debug(
+                'Tool argument <%s> not in SQAaaS tooling: '
+                '(tooling args: %s)' % (action_arg, tooling_args_keys)
+            )
         else:
-            logger.debug(tooling_args[arg_k])
+            logger.debug(
+                'Found matching tooling argument: %s' % tooling_args[action_arg]
+            )
             tool_args.append({
-                'id': arg_k,
-                'type': tooling_args[arg_k]['type'],
+                'id': action_arg,
+                'type': tooling_args[action_arg]['type'],
                 'value': arg_v
             })
+            logger.debug('Tracking tooling argument: %s' % tool_args)
 
     return {
-        'name': args.tool,
+        'name': tool,
         'args': tool_args
     }
 
 
 if __name__ == "__main__":
-    args = get_input_args()
-
-    tool = args.tool
-    if tool in ['commands']:
+    action_tool = get_envvar(envvar='INPUT_TOOL')['INPUT_TOOL']
+    if action_tool in ['commands']:
         lang = 'default'
-    elif tool in ['pytest']:
+    elif action_tool in ['pytest']:
         lang = 'Python'
     else:
-        logger.error('Tool <%s> not supported' % tool)
+        logger.error('Tool <%s> not supported' % action_tool)
         sys.exit(2)
 
-    tooling_args = get_tooling_args(tool, lang)
+    tooling_args = get_tooling_args(action_tool, lang)
     logger.debug('Format tool args as a dict: %s' % tooling_args)
 
-    step_json = generate_step_json(args, tooling_args)
+    step_json = generate_step_json(action_tool, tooling_args)
     logger.info('Step definition (JSON format): %s' % step_json)
 
-    github_workspace = os.environ['GITHUB_WORKSPACE']
+    github_workspace = get_envvar(envvar='GITHUB_WORKSPACE')['GITHUB_WORKSPACE']
     if github_workspace:
         logger.debug('Found GitHub workspace: %s' % github_workspace)
     else:
