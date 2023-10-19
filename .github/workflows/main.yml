@@ -20,6 +20,6 @@ jobs:
           test-path: './mytests'
       - name: Get step definition
         id: vars
-        run: echo "step_json=$(cat pytest_step.json)" >> $GITHUB_OUTPUT
+        run: echo "step_json=$(cat pytest_step.json | jq '.name')" >> $GITHUB_OUTPUT
       - name: Test output
         run: echo ${{ steps.vars.outputs.step_json }}
