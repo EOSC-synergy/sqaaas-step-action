@@ -139,7 +139,7 @@ if __name__ == "__main__":
     step_file = '.'.join([action_name, 'json'])
     step_file_abspath = os.path.join(github_workspace, step_file)
     with open(step_file_abspath, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+        json.dump(step_json, f, ensure_ascii=False, indent=4)
     logger.info(
         'Step definition (JSON format) dumped to file: %s' % step_file_abspath
     )
