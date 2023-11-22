@@ -17,8 +17,8 @@ logger = logging.getLogger('sqaaas-step-action')
 TOOLING_URL = 'https://raw.githubusercontent.com/EOSC-synergy/sqaaas-tooling/release/1.8.0/tooling.json'
 
 
-def get_tooling_args(tool, lang):
-    """Return arguments from SQAaaS tooling for the given tool.
+def get_tool_data(tool, lang):
+    """Return tool data from the SQAaaS tooling.
 
     Keyword arguments:
     tool -- the tool to get the tooling arguments from
@@ -28,7 +28,16 @@ def get_tooling_args(tool, lang):
         url=TOOLING_URL
     )
     data = req.json()
-    tooling_args_before = data['tools'][lang][tool]['args']
+
+    return data['tools'][lang][tool]
+
+def get_tooling_args(args):
+    """Format args indexed by tool id.
+
+    Keyword arguments:
+    args -- List of argument objects as defined in the SQAaaS tooling
+    """
+    tooling_args_before = args
     tooling_args_after = {}
     for arg in tooling_args_before:
         arg_id = arg.pop('id')
@@ -73,11 +82,31 @@ def get_envvar(envvar=None, prefix=None, ignore_envvars=[]):
     return envvars
 
 
-def generate_step_json(tool, tooling_args):
+def generate_step_json(tool, lang):
     """Generate JSON payload corresponding to a step definition.
 
     Keyword arguments:
-    tool -- the tool requested in the GitHub action
+    tool -- the tool to get the tooling arguments from
+    lang -- the language that the tool is mapped to
+    """
+    tool_data = get_tool_data(tool, lang)
+    args = tool_data.get('args', [])
+    if args:
+        tooling_args = get_tooling_args(args)
+        args = generate_args_json(tooling_args)
+    tool_data['args'] = args
+    tool_data.update({
+        'name': tool,
+        'lang': lang,
+    })
+
+    return tool_data
+
+
+def generate_args_json(tooling_args):
+    """Generate JSON payload corresponding to the given tool arguments.
+
+    Keyword arguments:
     tooling_args -- a dict with the SQAaaS tooling data
     """
     input_envvars = get_envvar(
@@ -115,10 +144,7 @@ def generate_step_json(tool, tooling_args):
             tool_args.append(_arg)
             logger.debug('Tracking tooling argument: %s' % tool_args)
 
-    return {
-        'name': tool,
-        'args': tool_args
-    }
+    return tool_args
 
 
 if __name__ == "__main__":
@@ -131,10 +157,7 @@ if __name__ == "__main__":
         logger.error('Tool <%s> not supported' % action_tool)
         sys.exit(2)
 
-    tooling_args = get_tooling_args(action_tool, lang)
-    logger.debug('Format tool args as a dict: %s' % tooling_args)
-
-    step_json = generate_step_json(action_tool, tooling_args)
+    step_json = generate_step_json(action_tool, lang)
     logger.info('Step definition (JSON format): %s' % step_json)
 
     github_workspace = get_envvar(envvar='GITHUB_WORKSPACE')['GITHUB_WORKSPACE']
