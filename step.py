@@ -94,14 +94,25 @@ def generate_step_json(tool, tooling_args):
                 '(tooling args: %s)' % (action_arg, tooling_args_keys)
             )
         else:
+            _arg = tooling_args[action_arg]
             logger.debug(
-                'Found matching tooling argument: %s' % tooling_args[action_arg]
+                'Found matching tooling argument <%s>: %s' % (action_arg, _arg)
             )
-            tool_args.append({
+            # If arg has 'repeatable=true' it might contain YAML multiline string
+            if _arg.get('repeatable', False):
+                arg_v = arg_v.split('\n')
+                arg_v = list(filter(None, arg_v))
+                logger.debug(
+                    'Action input <%s> contains multiline value: %s' % (
+                        action_arg, arg_v
+                    )
+                )
+            # Compose tool_args
+            _arg.update({
                 'id': action_arg,
-                'type': tooling_args[action_arg]['type'],
                 'value': arg_v
             })
+            tool_args.append(_arg)
             logger.debug('Tracking tooling argument: %s' % tool_args)
 
     return {
