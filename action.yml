@@ -12,6 +12,10 @@ inputs:
   tool:
     description: Tool to execute within the step
     required: true
+  container:
+    description: Docker container image where the step shall be executed
+    required: false
+    default: ''
   # For shell commands
   commands:
     description: List of shell commands to execute
