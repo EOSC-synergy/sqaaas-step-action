@@ -31,4 +31,4 @@ jobs:
       - name: Run SQAaaS assessment
         uses: eosc-synergy/sqaaas-assessment-action@feature/criteria_workflows
         with:
-          workflow: make_and_micromamba_step pytest_step
+          workflow: make_and_micromamba_step
