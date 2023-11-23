@@ -28,7 +28,6 @@ jobs:
           tool: 'pytest'
           test_path: './mytests'
       - name: Print out payload
-        id: vars
         run: cat pytest_step.json
       - name: Get step definition
         id: vars
