@@ -72,35 +72,17 @@ def get_envvar(envvar=None, prefix=None, ignore_envvars=[]):
             'Request to ignore environment variables: %s' % ignore_envvars
         )
         for key in ignore_envvars:
-            logger.debug('Removing environment variable <%s>' % key)
-            del envvars[key]
+            logger.debug('Ignoring environment variable <%s>' % key)
+            try:
+                del envvars[key]
+            except KeyError as e:
+                logger.debug('Cannot ignore variable. Variable not set: %s' % key)
         logger.debug(
             'Resultant set of environment variables after ignoring '
             'process: %s' % envvars
         )
 
     return envvars
-
-
-def generate_step_json(tool, lang):
-    """Generate JSON payload corresponding to a step definition.
-
-    Keyword arguments:
-    tool -- the tool to get the tooling arguments from
-    lang -- the language that the tool is mapped to
-    """
-    tool_data = get_tool_data(tool, lang)
-    args = tool_data.get('args', [])
-    if args:
-        tooling_args = get_tooling_args(args)
-        args = generate_args_json(tooling_args)
-    tool_data['args'] = args
-    tool_data.update({
-        'name': tool,
-        'lang': lang,
-    })
-
-    return tool_data
 
 
 def generate_args_json(tooling_args):
@@ -110,7 +92,9 @@ def generate_args_json(tooling_args):
     tooling_args -- a dict with the SQAaaS tooling data
     """
     input_envvars = get_envvar(
-        prefix='INPUT', ignore_envvars=['INPUT_TOOL', 'INPUT_NAME']
+        prefix='INPUT', ignore_envvars=[
+            'INPUT_TOOL', 'INPUT_NAME', 'INPUT_CONTAINER'
+        ]
     )
 
     tooling_args_keys = tooling_args.keys()
@@ -145,6 +129,46 @@ def generate_args_json(tooling_args):
             logger.debug('Tracking tooling argument: %s' % tool_args)
 
     return tool_args
+
+
+def generate_container_json():
+    """Generate JSON payload corresponding to a Docker definition."""
+    payload = {}
+    container = get_envvar(envvar='INPUT_CONTAINER')
+    if container:
+        container = container['INPUT_CONTAINER']
+        payload = {
+            'image': container
+        }
+        logger.debug('New \'docker\' payload: %s' % payload)
+
+    return payload
+
+
+def generate_step_json(tool, lang):
+    """Generate JSON payload corresponding to a step definition.
+
+    Keyword arguments:
+    tool -- the tool to get the tooling arguments from
+    lang -- the language that the tool is mapped to
+    """
+    payload = get_tool_data(tool, lang)
+    # container
+    container_payload = generate_container_json()
+    if container_payload:
+        payload['docker'] = container_payload
+    # args
+    args = payload.get('args', [])
+    if args:
+        tooling_args = get_tooling_args(args)
+        args = generate_args_json(tooling_args)
+    payload['args'] = args
+    payload.update({
+        'name': tool,
+        'lang': lang,
+    })
+
+    return payload
 
 
 if __name__ == "__main__":
