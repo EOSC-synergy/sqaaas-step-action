@@ -18,6 +18,10 @@ This action generates a step definition to be used in a SQAaaS quality assessmen
 
 **required** The name of the tool to be executed within the step. This tool shall be supported in the [SQAaaS tooling](https://github.com/eosc-synergy/sqaaas-tooling)
 
+## `container`
+
+**optional** The Docker image to run the step (defaults are taken from [SQAaaS tooling](https://github.com/eosc-synergy/sqaaas-tooling)).
+
 ## `commands`
 
 A list of shell commands to run.
@@ -38,5 +42,6 @@ uses: actions/sqaaas-step@v1
 with:
   name: pytest-step
   tool: pytest
+  container: myownpytestimage:latest
   test-path: ./tests
 ```
