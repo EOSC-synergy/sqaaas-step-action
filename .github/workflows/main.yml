@@ -33,6 +33,6 @@ jobs:
       - name: Test output
         run: echo ${{ steps.vars.outputs.step_json }}
       - name: Run SQAaaS assessment
-        uses: eosc-synergy/sqaaas-assessment-action@feature/criteria_workflows
+        uses: eosc-synergy/sqaaas-assessment-action@test/criteria_workflows
         with:
           workflow: make_and_micromamba_step pytest_step
