@@ -72,8 +72,11 @@ def get_envvar(envvar=None, prefix=None, ignore_envvars=[]):
             'Request to ignore environment variables: %s' % ignore_envvars
         )
         for key in ignore_envvars:
-            logger.debug('Removing environment variable <%s>' % key)
-            del envvars[key]
+            logger.debug('Ignoring environment variable <%s>' % key)
+            try:
+                del envvars[key]
+            except KeyError as e:
+                logger.debug('Cannot ignore variable. Variable not set: %s' % key)
         logger.debug(
             'Resultant set of environment variables after ignoring '
             'process: %s' % envvars
