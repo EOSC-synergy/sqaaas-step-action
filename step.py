@@ -82,27 +82,6 @@ def get_envvar(envvar=None, prefix=None, ignore_envvars=[]):
     return envvars
 
 
-def generate_step_json(tool, lang):
-    """Generate JSON payload corresponding to a step definition.
-
-    Keyword arguments:
-    tool -- the tool to get the tooling arguments from
-    lang -- the language that the tool is mapped to
-    """
-    tool_data = get_tool_data(tool, lang)
-    args = tool_data.get('args', [])
-    if args:
-        tooling_args = get_tooling_args(args)
-        args = generate_args_json(tooling_args)
-    tool_data['args'] = args
-    tool_data.update({
-        'name': tool,
-        'lang': lang,
-    })
-
-    return tool_data
-
-
 def generate_args_json(tooling_args):
     """Generate JSON payload corresponding to the given tool arguments.
 
@@ -145,6 +124,27 @@ def generate_args_json(tooling_args):
             logger.debug('Tracking tooling argument: %s' % tool_args)
 
     return tool_args
+
+
+def generate_step_json(tool, lang):
+    """Generate JSON payload corresponding to a step definition.
+
+    Keyword arguments:
+    tool -- the tool to get the tooling arguments from
+    lang -- the language that the tool is mapped to
+    """
+    tool_data = get_tool_data(tool, lang)
+    args = tool_data.get('args', [])
+    if args:
+        tooling_args = get_tooling_args(args)
+        args = generate_args_json(tooling_args)
+    tool_data['args'] = args
+    tool_data.update({
+        'name': tool,
+        'lang': lang,
+    })
+
+    return tool_data
 
 
 if __name__ == "__main__":
