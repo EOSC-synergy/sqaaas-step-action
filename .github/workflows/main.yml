@@ -20,13 +20,7 @@ jobs:
           commands: |
             make
             micromamba activate ./.venv
-      - name: Step definition for a SQAaaS assessment
-        uses: ./ # Uses an action in the root directory
-        id: sqaaas_step_pytest
-        with:
-          name: 'pytest_step'
-          tool: 'pytest'
-          test_path: './mytests'
+            pytest .
       - name: Print out payload
         run: cat pytest_step.json
       - name: Get step definition
@@ -35,6 +29,6 @@ jobs:
       - name: Test output
         run: echo ${{ steps.vars.outputs.step_json }}
       - name: Run SQAaaS assessment
-        uses: eosc-synergy/sqaaas-assessment-action@test/criteria_workflows
+        uses: eosc-synergy/sqaaas-assessment-action@feature/criteria_workflows
         with:
           workflow: make_and_micromamba_step pytest_step
