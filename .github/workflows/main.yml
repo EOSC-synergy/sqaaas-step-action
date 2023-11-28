@@ -18,9 +18,8 @@ jobs:
           name: make_and_micromamba_step
           tool: commands
           commands: |
-            make
-            micromamba activate ./.venv
-            pytest .
+            micromamba env create -p ./.venv --file environment-cern.yml -y
+            micromamba run -p ./.venv pytest ./tests/
       - name: Print out payload
         run: cat make_and_micromamba_step.json
       - name: Run SQAaaS assessment
