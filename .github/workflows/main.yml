@@ -24,7 +24,7 @@ jobs:
             micromamba run -p ./.venv-pytorch pytest -v ./tests/ -m "not slurm"
       - name: Print out payload
         run: cat make_and_micromamba_step.json
-          # - name: Run SQAaaS assessment
-          #   uses: eosc-synergy/sqaaas-assessment-action@feature/criteria_workflows
-          #   with:
-          #     workflow: make_and_micromamba_step
+      - name: Run SQAaaS assessment
+        uses: eosc-synergy/sqaaas-assessment-action@feature/criteria_workflows
+        with:
+          workflow: make_and_micromamba_step
