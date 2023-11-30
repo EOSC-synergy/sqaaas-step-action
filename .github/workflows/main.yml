@@ -18,8 +18,10 @@ jobs:
           name: make_and_micromamba_step
           tool: commands
           commands: |
-            micromamba env create -p ./.venv --file environment-cern.yml -y
-            micromamba run -p ./.venv pytest ./tests/
+            make torch-cpu
+            make tf-2.13
+            micromamba run -p ./.venv-pytorch pip install .[dev]
+            micromamba run -p ./.venv-pytorch pytest -v ./tests/ -m "not slurm"
       - name: Print out payload
         run: cat make_and_micromamba_step.json
           # - name: Run SQAaaS assessment
