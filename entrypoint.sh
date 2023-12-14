@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-python step.py --name $1 \
-               --tool $2 \
-               --commands $3 \
-               --test-path $4
+python /usr/bin/step.py --name $1 \
+                        --tool $2 \
+                        --commands $3 \
+                        --test-path $4
