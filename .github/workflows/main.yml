@@ -9,20 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     name: Job that returns a JSON payload of a step in a SQAaaS assessment
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Step definition for a SQAaaS assessment
-        uses: ./ # Uses an action in the root directory
-        id: sqaaas_step_environment
+        uses: eosc-synergy/sqaaas-step-action@v1
         with:
-          name: make_and_micromamba_step
+          name: dummy_test
           tool: commands
           commands: |
-            micromamba env create -p ./.venv --file environment-cern.yml -y
-            micromamba run -p ./.venv pytest ./tests/
+            echo "here run tests"
       - name: Print out payload
-        run: cat make_and_micromamba_step.json
-          # - name: Run SQAaaS assessment
-          #   uses: eosc-synergy/sqaaas-assessment-action@feature/criteria_workflows
-          #   with:
-          #     workflow: make_and_micromamba_step
+        run: cat dummy_test.json
+      - name: Run SQAaaS assessment
+        uses: eosc-synergy/sqaaas-assessment-action@feature/criteria_workflows
+        with:
+          repo: https://github.com/eosc-synergy/sqaaas-web
+          steps: dummy_test
