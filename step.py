@@ -24,6 +24,7 @@ def get_tool_data(tool, lang):
     tool -- the tool to get the tooling arguments from
     lang -- the language that the tool is mapped to
     """
+    logger.debug('Using SQAaaS tooling metadata: %s' % TOOLING_URL)
     req = requests.get(
         url=TOOLING_URL
     )
@@ -135,8 +136,8 @@ def generate_container_json():
     """Generate JSON payload corresponding to a Docker definition."""
     payload = {}
     container = get_envvar(envvar='INPUT_CONTAINER')
+    container = container['INPUT_CONTAINER']
     if container:
-        container = container['INPUT_CONTAINER']
         payload = {
             'image': container
         }
