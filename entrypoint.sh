@@ -8,3 +8,5 @@ python /usr/bin/step.py --name $1 \
                         --tool $2 \
                         --commands $3 \
                         --test-path $4
+exit_status=$?
+exit $exit_status
