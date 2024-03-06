@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-import argparse
 import json
 import logging
 import os
@@ -84,6 +83,7 @@ def get_envvar(envvar=None, prefix=None, ignore_envvars=[]):
             try:
                 del envvars[key]
             except KeyError as e:
+                logger.error(str(e))
                 logger.debug("Cannot ignore variable. Variable not set: %s" % key)
         logger.debug(
             "Resultant set of environment variables after ignoring "
