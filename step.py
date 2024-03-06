@@ -136,8 +136,8 @@ def generate_container_json():
     """Generate JSON payload corresponding to a Docker definition."""
     payload = {}
     container = get_envvar(envvar='INPUT_CONTAINER')
-    container = container['INPUT_CONTAINER']
     if container:
+        container = container['INPUT_CONTAINER']
         payload = {
             'image': container
         }
