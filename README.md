@@ -38,7 +38,7 @@ Definition of the step in JSON format (in accordance with SQAaaS API specificati
 
 ## Example usage
 ```yaml
-uses: actions/sqaaas-step@v1
+uses: eosc-synergy/sqaaas-step-action@v1
 with:
   name: pytest-step
   tool: pytest
