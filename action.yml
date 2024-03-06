@@ -26,6 +26,11 @@ inputs:
     description: Path to test cases
     required: false
     default: ''
+  # For 'tox' tool
+  tox_env:
+    description: tox environment
+    required: false
+    default: ''
 outputs:
   step:
     description: 'Definition of the step in JSON format (in accordance with SQAaaS API specification)'
