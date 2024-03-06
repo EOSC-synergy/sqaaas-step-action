@@ -41,8 +41,12 @@ def get_tooling_args(args):
     tooling_args_before = args
     tooling_args_after = {}
     for arg in tooling_args_before:
-        arg_id = arg.pop('id')
-        tooling_args_after[arg_id] = arg
+        try:
+            arg_id = arg.pop('id')
+        except KeyError:
+            logger.debug('Ignoring argument <%s> as it does not provide the <id> property in SQAaaS tooling' % arg)
+        else:
+            tooling_args_after[arg_id] = arg
 
     return tooling_args_after
 
