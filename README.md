@@ -30,6 +30,10 @@ A list of shell commands to run.
 
 **required for `pytest`** The location of the test cases.
 
+## `tox_env`
+
+**required for `tox``** The name for the tox environment to run.
+
 ## Outputs
 
 ## `step`
