@@ -26,7 +26,7 @@ This action generates a step definition to be used in a SQAaaS quality assessmen
 
 A list of shell commands to run.
 
-## `test-path`
+## `test_path`
 
 **required for `pytest`** The location of the test cases.
 
