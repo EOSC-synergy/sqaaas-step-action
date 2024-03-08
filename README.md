@@ -5,6 +5,10 @@ SPDX-FileContributor: Pablo Orviz <orviz@ifca.unican.es>
 SPDX-License-Identifier: GPL-3.0-only
 -->
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 # SQAaaS Step action
 
 This action generates a step definition to be used in a SQAaaS quality assessment. A step is composed of a tool execution, including its input arguments.
