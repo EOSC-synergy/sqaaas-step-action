@@ -21,7 +21,11 @@ This action generates a step definition to be used in a SQAaaS quality assessmen
 
 ## `tool`
 
-**required** The name of the tool to be executed within the step. This tool shall be supported in the [SQAaaS tooling](https://github.com/eosc-synergy/sqaaas-tooling)
+**required** The name of the tool to be executed within the step. Tools currently supported are:
+- `commands`: executes bash command/s
+- Python's tools: `pytest` and `tox`
+
+Note: support for new tools shall be aligned with the [SQAaaS tooling](https://github.com/eosc-synergy/sqaaas-tooling)
 
 ## `container`
 
