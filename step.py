@@ -187,10 +187,6 @@ if __name__ == "__main__":
     step_json = generate_step_json(action_tool, lang)
     logger.info("Step definition (JSON format): %s" % step_json)
 
-    import sys
-
-    sys.exit(0)
-
     github_workspace = get_envvar(envvar="GITHUB_WORKSPACE")["GITHUB_WORKSPACE"]
     if github_workspace:
         logger.debug("Found GitHub workspace: %s" % github_workspace)
