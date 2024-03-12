@@ -64,6 +64,7 @@ def get_envvar(envvar=None, prefix=None, ignore_envvars=[]):
     prefix -- the prefix of the environment variable to match
     ignore_envvars -- a list of environment variables that will be ignored
     """
+    logger.debug("Environment variables: %s" % os.environ)
     envvars = None
     try:
         if envvar:
