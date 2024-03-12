@@ -12,27 +12,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Step definition for a SQAaaS assessment
-        uses: ./ # Uses an action in the root directory
-        id: sqaaas_step_environment
+        uses: eosc-synergy/sqaaas-step-action@release/1.3.0
         with:
-          name: make_and_micromamba_step
-          tool: commands
-          commands: |
-            make
-            micromamba activate ./.venv
-      - name: Step definition for a SQAaaS assessment
-        uses: ./ # Uses an action in the root directory
-        id: sqaaas_step_pytest
-        with:
-          name: 'pytest_step'
-          tool: 'pytest'
-          test_path: './mytests'
+          name: tox_step
+          tool: tox
+          tox_env: py3
       - name: Get step definition
-        id: vars
         run: echo "step_json=$(cat pytest_step.json | jq '.name')" >> $GITHUB_OUTPUT
       - name: Test output
         run: echo ${{ steps.vars.outputs.step_json }}
-      - name: Run SQAaaS assessment
-        uses: eosc-synergy/sqaaas-assessment-action@feature/criteria_workflows
-        with:
-          workflow: make_and_micromamba_step pytest_step
+          # - name: Run SQAaaS assessment
+          #   uses: eosc-synergy/sqaaas-assessment-action@feature/criteria_workflows
+          #   with:
+          #     workflow: make_and_micromamba_step pytest_step
