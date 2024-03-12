@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: Copyright contributors to the Software Quality Assurance as a Service (SQAaaS) project.
-# SPDX-FileContributor: Pablo Orviz <orviz@ifca.unican.es>
+# SPDX-FileContributor: 2017-2024 Pablo Orviz <orviz@ifca.unican.es>
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
@@ -137,7 +137,7 @@ def generate_args_json(tooling_args):
 def generate_container_json():
     """Generate JSON payload corresponding to a Docker definition."""
     payload = {}
-    container = get_envvar(envvar="INPUT_CONTAINER")
+    container = get_envvar(envvar="INPUT_CONTAINER").get("INPUT_CONTAINER", "")
     if container:
         container = container["INPUT_CONTAINER"]
         payload = {"image": container}
