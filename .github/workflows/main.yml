@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Step definition for a SQAaaS assessment
-        uses: eosc-synergy/sqaaas-step-action@v1.2.0
+        uses: eosc-synergy/sqaaas-step-action@1.2.0
         with:
           name: tox_step
           tool: tox
