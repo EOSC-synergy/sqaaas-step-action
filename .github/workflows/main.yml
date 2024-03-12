@@ -12,13 +12,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Step definition for a SQAaaS assessment
-        uses: eosc-synergy/sqaaas-step-action@v1
+        uses: eosc-synergy/sqaaas-step-action@v1.2.0
         with:
           name: tox_step
           tool: tox
           tox_env: py3
       - name: Get step definition
-        run: echo "step_json=$(cat pytest_step.json | jq '.name')" >> $GITHUB_OUTPUT
+        run: echo "step_json=$(cat tox_step.json | jq '.name')" >> $GITHUB_OUTPUT
       - name: Test output
         run: echo ${{ steps.vars.outputs.step_json }}
           # - name: Run SQAaaS assessment
