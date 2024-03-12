@@ -14,7 +14,9 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("sqaaas-step-action")
 
 
-TOOLING_URL = "https://raw.githubusercontent.com/EOSC-synergy/sqaaas-tooling/release/2.0.0/tooling.json"
+TOOLING_URL = (
+    "https://raw.githubusercontent.com/EOSC-synergy/sqaaas-tooling/2.0.0/tooling.json"
+)
 
 
 def get_tool_data(tool, lang):
@@ -105,6 +107,7 @@ def generate_args_json(tooling_args):
     )
 
     tooling_args_keys = tooling_args.keys()
+    logger.debug("Tooling argument keys: %s" % tooling_args_keys)
     tool_args = []
     for arg_k, arg_v in input_envvars.items():
         action_arg = arg_k.replace("INPUT_", "").lower()
