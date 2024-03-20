@@ -62,7 +62,7 @@ def get_envvar(envvar=None, prefix=None, ignore_envvars=[]):
     prefix -- the prefix of the environment variable to match
     ignore_envvars -- a list of environment variables that will be ignored
     """
-    envvars = None
+    envvars = {}
     try:
         if envvar:
             envvars = {envvar: os.environ[envvar]}
