@@ -50,6 +50,17 @@ A list of shell commands to run.
 Definition of the step in JSON format (in accordance with SQAaaS API specification).
 
 ## Example usage
+Example of the use of `pytest` tool:
+```yaml
+uses: eosc-synergy/sqaaas-step-action@v1
+with:
+  name: pytest-step
+  tool: pytest
+  container: myownpytestimage:latest
+  test-path: ./tests
+```
+
+Specific set of commands can be provided with `commands`:
 ```yaml
 uses: eosc-synergy/sqaaas-step-action@v1
 with:
