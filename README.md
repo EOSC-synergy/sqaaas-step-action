@@ -60,7 +60,7 @@ with:
   test-path: ./tests
 ```
 
-Specific set of commands can be provided with `commands`:
+A specific set of commands can be provided with `commands`:
 ```yaml
 uses: eosc-synergy/sqaaas-step-action@v1
 with:
