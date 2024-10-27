@@ -55,8 +55,8 @@ Example of the use of `pytest` tool:
 uses: eosc-synergy/sqaaas-step-action@v1
 with:
   name: pytest-step
-  tool: pytest
   container: myownpytestimage:latest
+  tool: pytest
   test-path: ./tests
 ```
 
@@ -64,8 +64,10 @@ Specific set of commands can be provided with `commands`:
 ```yaml
 uses: eosc-synergy/sqaaas-step-action@v1
 with:
-  name: pytest-step
-  tool: pytest
+  name: commands-step
   container: myownpytestimage:latest
-  test-path: ./tests
+  tool: commands
+  commands: |
+    echo "First command to run"
+    echo "Second command to run"
 ```
